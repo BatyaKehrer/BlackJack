@@ -22,42 +22,25 @@ public class Program
         Console.WriteLine("Shuffled Deck:");
         deck.PrintDeck();
         Console.WriteLine($"Total Number of Cards:  {deck.Count()}"); // Total Number of cards in deck at start
-
-        Console.WriteLine("\nDealing 20 cards:");
-        for (int i = 0; i < 20; i++)
+        Console.WriteLine();
+        Hand hand1 = new Hand();
+        while (!hand1.Bust && !hand1.Stand)
         {
-            Card card = deck.DealCard();
-            if (card != null)
-            {
-                Console.WriteLine($"Dealt: {card}");
-            }
+            hand1.AddCard(deck.DealCard());
+            Console.WriteLine($"Hand Card Count: {hand1.cards.Count}");
+            Console.WriteLine($"Hand value: {hand1.value}");
         }
 
-        Console.WriteLine($"\nCards left in deck: {deck.Count()}"); // Assuming a Count() method or property on Deck
-
-        Console.WriteLine("\nDeck is low, adding 2 decks");
-        try
+        if (hand1.Bust)
         {
-            deck.AddDecks(2);
+            Console.WriteLine("\nBust...\n");
+            hand1.printHand();
+            Console.WriteLine($"Hand value: {hand1.value}");
         }
-        catch (Exception ex)
+        else
         {
-            Console.WriteLine(ex.Message);
-            return;
+            Console.WriteLine("\nHand Value is 21!!!!!!!");
+            hand1.printHand();
         }
-        deck.PrintDeck();
-        Console.WriteLine($"Total Number of Cards:  {deck.Count()}"); // Total Number of cards in deck at start
-
-        Console.WriteLine("\nDealing 40 cards:");
-        for (int i = 0; i < 40; i++)
-        {
-            Card card = deck.DealCard();
-            if (card != null)
-            {
-                Console.WriteLine($"Dealt: {card}");
-            }
-        }
-        Console.WriteLine($"\nCards left in deck: {deck.Count()}"); // Assuming a Count() method or property on Deck
-
     }
 }
