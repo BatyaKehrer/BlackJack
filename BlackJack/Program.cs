@@ -14,6 +14,10 @@ public class Program
         Console.WriteLine();
         Hand hand1 = new Hand();
         Dealer dealer = new Dealer();
+        dealer.dealCard();
+        dealer.dealCard();
+        Console.WriteLine($"Dealers Revealed Card is: {dealer.getRevealedCard()}");
+
         while (!hand1.Bust && !hand1.Stand)
         {
             hand1.AddCard(deck.DealCard());
@@ -32,5 +36,22 @@ public class Program
             Console.WriteLine("\nHand Value is 21!!!!!!!");
             hand1.printHand();
         }
+        dealer.playDealer();
+
+
+        Console.WriteLine($"\nDealers Final Value is: {dealer.getValue()}");
+        dealer.revealHand();
+        if (dealer.isBust())
+        {
+            Console.WriteLine("\nDealer Bust...\n");
+            hand1.printHand();
+            Console.WriteLine($"Hand value: {hand1.value}");
+        }
+        else if (dealer.getValue() == 21)
+        {
+            Console.WriteLine("\nHand Value is 21!!!!!!!");
+            hand1.printHand();
+        }
+
     }
 }

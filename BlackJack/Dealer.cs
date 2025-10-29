@@ -10,13 +10,11 @@ namespace BlackJack
     internal class Dealer
     {
         Hand hand;
-        Deck deck;
 
         public Dealer()
 
         {
             hand = new Hand();
-            deck = Deck.Instance;
         }
 
         public void clearHand()
@@ -24,13 +22,38 @@ namespace BlackJack
             hand = new Hand();
         }
 
+        public void dealCard()
+        {
+            hand.AddCard(Deck.Instance.DealCard());
+        }
+
+        public Card getRevealedCard()
+        {
+            return hand.cards[0];
+        }
+
+        public void revealHand()
+        {
+            hand.printHand();
+        }
+
         public void playDealer()
         {
             while (hand.value <= 16)
             {
-                hand.AddCard(deck.DealCard());
+                hand.AddCard(Deck.Instance.DealCard());
             }
             hand.Stand = true;
+        }
+
+        public int getValue()
+        {
+            return hand.value;
+        }
+
+        public bool isBust()
+        {
+            return hand.Bust;
         }
     }
 }
