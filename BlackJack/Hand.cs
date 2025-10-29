@@ -29,6 +29,11 @@ namespace BlackJack
         {
             cards.Add(card);
             CalculateValue();
+            if(cards.Count == 2 && value == 21)
+            {
+                Blackjack = true;
+                Stand = true;
+            }
 
         }
 

@@ -55,5 +55,10 @@ namespace BlackJack
         {
             return hand.Bust;
         }
+
+        public bool isBlackJack()
+        {
+            return hand.Blackjack;
+        }
     }
 }

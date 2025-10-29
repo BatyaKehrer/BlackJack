@@ -17,6 +17,10 @@ public class Program
         dealer.dealCard();
         dealer.dealCard();
         Console.WriteLine($"Dealers Revealed Card is: {dealer.getRevealedCard()}");
+        if(dealer.isBlackJack())
+        {
+            Console.WriteLine($"\nDealer has BLACKJACK!!!!!!!!!!!!!!!!!!!\n");
+        }
 
         while (!hand1.Bust && !hand1.Stand)
         {
