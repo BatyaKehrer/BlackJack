@@ -4,26 +4,16 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Deck deck;
-        try
-        {
-            deck = new Deck(1);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            return;
-        }
+        Deck deck = Deck.Instance;
+        deck.AddDecks(1);
         Console.WriteLine("Initial Deck:");
         deck.PrintDeck();
-
-        Console.WriteLine("\nShuffling Deck...");
-        deck.Shuffle();
         Console.WriteLine("Shuffled Deck:");
         deck.PrintDeck();
-        Console.WriteLine($"Total Number of Cards:  {deck.Count()}"); // Total Number of cards in deck at start
+        Console.WriteLine($"\nTotal Number of Cards:  {deck.Count()}"); // Total Number of cards in deck at start
         Console.WriteLine();
         Hand hand1 = new Hand();
+        Dealer dealer = new Dealer();
         while (!hand1.Bust && !hand1.Stand)
         {
             hand1.AddCard(deck.DealCard());

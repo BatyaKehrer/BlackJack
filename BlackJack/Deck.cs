@@ -1,44 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BlackJack
 {
-    internal class Deck
+    public sealed class Deck
     {
+        private static Deck instance = null;
         private List<Card> cards;
         private Random random;
+        private IEnumerable<(string, string)> cardTouples;
 
-        public Deck()
+        private Deck()
         {
             cards = new List<Card>();
             random = new Random();
             InitializeDeck();
+            Shuffle();
         }
 
-        public Deck(int numOfDecks)
+        public static Deck Instance
         {
-            if (numOfDecks < 1 || numOfDecks > 8)
-            {
-                throw new ArgumentOutOfRangeException($"Number of decks must be at least 1 and no greater than 8: Value provided was {numOfDecks}.");
+            get 
+            { 
+                if(instance == null)
+                {
+                    instance = new Deck();
+                }
+                return instance;
             }
-            cards = new List<Card>();
-            random = new Random();
-            InitalizeLargeDeck(numOfDecks);
         }
+
+        //public Deck(int numOfDecks)
+        //{
+        //    if (numOfDecks < 1 || numOfDecks > 8)
+        //    {
+        //        throw new ArgumentOutOfRangeException($"Number of decks must be at least 1 and no greater than 8: Value provided was {numOfDecks}.");
+        //    }
+        //    cards = new List<Card>();
+        //    random = new Random();
+        //    InitalizeLargeDeck(numOfDecks);
+        //}
 
         private void InitializeDeck()
         {
             string[] suits = { "Hearts", "Diamonds", "Clubs", "Spades" };
             string[] values = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
 
-            var touples = from suit in suits
+            cardTouples = from suit in suits
                           from value in values
                           select (suit, value);
 
-            cards.AddRange(touples.Select(card => new Card(card.suit, card.value)));
+            cards.AddRange(cardTouples.Select(card => new Card(card.Item1, card.Item2)));
         }
 
         public void AddDecks(int numOfDecks)
@@ -47,24 +63,24 @@ namespace BlackJack
             {
                 throw new ArgumentOutOfRangeException($"Number of decks must be at least 1 and no greater than 8: Value provided was {numOfDecks}.");
             }
-            InitalizeLargeDeck(numOfDecks);
+            cards.AddRange(Enumerable.Repeat(cardTouples.Select(card => new Card(card.Item1, card.Item2)), numOfDecks).SelectMany(n => n));
             Shuffle();
         }
 
-        private void InitalizeLargeDeck(int numOfDecks)
-        {
-            string[] suits = { "Hearts", "Diamonds", "Clubs", "Spades" };
-            string[] values = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
+        //private void InitalizeLargeDeck(int numOfDecks)
+        //{
+        //    string[] suits = { "Hearts", "Diamonds", "Clubs", "Spades" };
+        //    string[] values = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
 
-            var touples = from suit in suits
-                          from value in values
-                          select (suit, value);
-            cards.AddRange(Enumerable.Repeat(touples.Select(card => new Card(card.suit, card.value)), numOfDecks).SelectMany(n => n));
+        //    var touples = from suit in suits
+        //                  from value in values
+        //                  select (suit, value);
+        //    cards.AddRange(Enumerable.Repeat(touples.Select(card => new Card(card.suit, card.value)), numOfDecks).SelectMany(n => n));
 
 
-        }
+        //}
 
-        public void Shuffle()
+        private void Shuffle()
         {
             int n = cards.Count;
             while (n > 1)
