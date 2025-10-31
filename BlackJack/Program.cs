@@ -12,33 +12,85 @@ public class Program
         deck.PrintDeck();
         Console.WriteLine($"\nTotal Number of Cards:  {deck.Count()}"); // Total Number of cards in deck at start
         Console.WriteLine();
-        Hand hand1 = new Hand();
+        List<Player> players = new List<Player>();
+        players.Add(new Player());
+        players.Add(new Player());
         Dealer dealer = new Dealer();
-        dealer.dealCard();
-        dealer.dealCard();
+        
+        foreach(Player p in players) //DealCards function in game manager
+        {
+            p.addCard();
+        }
+        dealer.addCard();
+        foreach (Player p in players) 
+        {
+            p.addCard();
+        }
+        dealer.addCard();
+        bool blackjackCheck = false; //BlackJackCheck function in gam manager
+        foreach (Player p in players)
+        {
+            if(p.isBlackJack())
+            {
+                blackjackCheck = true;
+            }
+        }
+        if(dealer.isBlackJack())
+        {
+            blackjackCheck = true;
+        }
+        if(blackjackCheck)
+        {
+            Console.WriteLine("\nSOMEONE HAS A BLACKJACK\n");
+        }
+
         Console.WriteLine($"Dealers Revealed Card is: {dealer.getRevealedCard()}");
         if(dealer.isBlackJack())
         {
             Console.WriteLine($"\nDealer has BLACKJACK!!!!!!!!!!!!!!!!!!!\n");
         }
 
-        while (!hand1.Bust && !hand1.Stand)
+        foreach (Player p in players)
         {
-            hand1.AddCard(deck.DealCard());
-            Console.WriteLine($"Hand Card Count: {hand1.cards.Count}");
-            Console.WriteLine($"Hand value: {hand1.value}");
+            Console.WriteLine("\nA new player is up!\n");
+            while(p.currentHand < p.hands.Count && !p.isStand())
+            {
+                Console.WriteLine($"Current Hand Value is : {p.getValue()}. Hit(H) or Stand(S)?");
+                p.printHand();
+                string playerIn = Console.ReadLine(); //TODO Get User input and do the right action.
+                if(playerIn.ToLower() == "h")
+                {
+                    p.addCard();
+                }
+                else if (playerIn.ToLower() == "s")
+                {
+                    p.stand();
+                }
+                else
+                {
+                    Console.WriteLine("Please enter an 'H' (Hit) or 'S' (Stand)");
+                }
+                if(p.isStand() || p.isBust())
+                {
+                    p.nextHand();
+                }
+            }
+            p.printHand();
         }
 
-        if (hand1.Bust)
+        foreach (Player p in players)
         {
-            Console.WriteLine("\nBust...\n");
-            hand1.printHand();
-            Console.WriteLine($"Hand value: {hand1.value}");
-        }
-        else
-        {
-            Console.WriteLine("\nHand Value is 21!!!!!!!");
-            hand1.printHand();
+            foreach (Hand h in p.hands)
+            { 
+                if (h.bust)
+                {
+                    Console.WriteLine($"Player Busted with value: {h.value}");
+                }
+                else
+                {
+                    Console.WriteLine($"Player Final Value is {h.value}");
+                }
+            }
         }
         dealer.playDealer();
 
@@ -48,13 +100,61 @@ public class Program
         if (dealer.isBust())
         {
             Console.WriteLine("\nDealer Bust...\n");
-            hand1.printHand();
-            Console.WriteLine($"Hand value: {hand1.value}");
+            dealer.hands[0].printHand();
+            Console.WriteLine($"Hand value: {dealer.getValue()}\n");
         }
         else if (dealer.getValue() == 21)
         {
             Console.WriteLine("\nHand Value is 21!!!!!!!");
-            hand1.printHand();
+            dealer.hands[0].printHand();
+        }
+
+        if (!dealer.isBust())
+        {
+            foreach (Player p in players)
+            {
+                foreach (Hand h in p.hands)
+                {
+                    if (!h.bust)
+                    {
+                        if (h.value > dealer.getValue())
+                        {
+                            Console.WriteLine("Player wins!");
+                        }
+                        else if (h.value == dealer.getValue())
+                        {
+                            Console.WriteLine("Stand-off hit");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Dealer wins!");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Player Busted");
+                    }
+                }
+
+            }
+        }
+        else
+        {
+            Console.WriteLine("Dealer Busted");
+            foreach(Player p in players)
+            {
+                foreach (Hand h in p.hands)
+                {
+                    if (!h.bust)
+                    {
+                        Console.WriteLine("Player Wins");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Player Busted");
+                    }
+                }
+            }
         }
 
     }

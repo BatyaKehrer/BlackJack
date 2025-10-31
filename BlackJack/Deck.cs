@@ -34,17 +34,6 @@ namespace BlackJack
             }
         }
 
-        //public Deck(int numOfDecks)
-        //{
-        //    if (numOfDecks < 1 || numOfDecks > 8)
-        //    {
-        //        throw new ArgumentOutOfRangeException($"Number of decks must be at least 1 and no greater than 8: Value provided was {numOfDecks}.");
-        //    }
-        //    cards = new List<Card>();
-        //    random = new Random();
-        //    InitalizeLargeDeck(numOfDecks);
-        //}
-
         private void InitializeDeck()
         {
             string[] suits = { "Hearts", "Diamonds", "Clubs", "Spades" };
@@ -66,19 +55,6 @@ namespace BlackJack
             cards.AddRange(Enumerable.Repeat(cardTouples.Select(card => new Card(card.Item1, card.Item2)), numOfDecks).SelectMany(n => n));
             Shuffle();
         }
-
-        //private void InitalizeLargeDeck(int numOfDecks)
-        //{
-        //    string[] suits = { "Hearts", "Diamonds", "Clubs", "Spades" };
-        //    string[] values = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
-
-        //    var touples = from suit in suits
-        //                  from value in values
-        //                  select (suit, value);
-        //    cards.AddRange(Enumerable.Repeat(touples.Select(card => new Card(card.suit, card.value)), numOfDecks).SelectMany(n => n));
-
-
-        //}
 
         private void Shuffle()
         {
