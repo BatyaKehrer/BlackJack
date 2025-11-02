@@ -12,39 +12,60 @@ namespace BlackJack
         public List<Card> cards;
         public int value;
         public int bet;
-        public bool blackJack;
         public bool bust;
         public bool stand;
+        public bool canSplit;
 
         public Hand()
         {
             cards = new List<Card>();
             value = -1;
             bet = -1;
-            blackJack = false;
             bust = false;
             stand = false;
+            canSplit = false;
         }
 
+        public Hand(Card card)
+        {
+            cards = new List<Card>();
+            cards.Add(card);
+            value = -1;
+            bet = -1;
+            bust = false;
+            stand = false;
+            canSplit = false;
+        }
 
         
-        public void addCard()
+        public void drawCard()
         {
             cards.Add(Deck.Instance.DealCard());
             calculateValue();
-            if(cards.Count == 2 && value == 21)
+            if(cards.Count == 2)
             {
-                blackJack = true;
-                stand = true;
+                if (cards[0].value == cards[1].value)
+                {
+                    canSplit = true;
+                }
             }
-            
-
+            else if(cards.Count > 2 && canSplit)
+            {
+                canSplit = false;
+            }
         }
 
-        public Card removeCard()
+        public void addCard(Card card)
         {
-            Card card = cards[0];
-            cards.RemoveAt(0);
+            cards.Add(card);
+            calculateValue();
+        }
+
+        public Card removeCard(int val)
+        {
+            Card card = cards[val];
+            cards.RemoveAt(val);
+            calculateValue();
             return card;
         }
 

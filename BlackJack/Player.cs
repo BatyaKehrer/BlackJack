@@ -12,12 +12,30 @@ namespace BlackJack
         public List<Hand> hands;
         public int currentHand;
         public int bankrol;
+        public string playerName;
+        public bool blackJack;
 
         public Player()
         {
             hands = new List<Hand>();
             currentHand = -1;
             bankrol = 1000;
+            playerName = "Player";
+            blackJack = false;
+        }
+
+        public Player(string name)
+        {
+            hands = new List<Hand>();
+            currentHand = -1;
+            bankrol = 1000;
+            playerName = name;
+            blackJack = false;
+        }
+
+        public bool canSplit()
+        {
+            return hands[currentHand].canSplit;
         }
 
         public int getValue()
@@ -30,14 +48,19 @@ namespace BlackJack
             return hands[currentHand].bust;
         }
 
-        public bool isBlackJack()
-        {
-            return hands[currentHand].blackJack;
-        }
+        //public void dealCard()
+        //{
+        //    hands[currentHand].drawCard();
+        //    if(hands.Count == 1 && hands[currentHand].value == 21)
+        //    {
+        //        blackJack = true;
+        //    }
 
-        public void dealCard()
+        //}
+
+        public int getCardCount()
         {
-            hands[currentHand].addCard();
+            return hands[currentHand].cards.Count;
         }
 
         public void clearHands()
@@ -52,12 +75,26 @@ namespace BlackJack
                 hands.Add(new Hand());
                 currentHand = 0;
             }
-            hands[currentHand].addCard();
+            hands[currentHand].drawCard();
+            if (hands.Count == 1 && hands[currentHand].value == 21)
+            {
+                blackJack = true;
+            }
         }
 
-        public void printHand()
+        public void printCurrentHand()
         {
             hands[currentHand].printHand();
+        }
+
+        public void printAllHands()
+        {
+            for (int i = 0; i < hands.Count; i++)
+            {
+                Console.WriteLine($"{playerName} Hand #{i + 1} value: {hands[i].value}");
+                hands[i].printHand();
+                Console.WriteLine();
+            }
         }
 
         public bool isStand()
@@ -67,12 +104,13 @@ namespace BlackJack
 
         public void hit()
         {
-            hands[currentHand].addCard();
+            hands[currentHand].drawCard();
         }
 
         public void stand()
         {
             hands[currentHand].stand = true;
+            hands[currentHand].canSplit = false;
             nextHand();
         }
 
@@ -86,6 +124,22 @@ namespace BlackJack
             {
                 currentHand++;
             }
+        }
+
+        public void splitHand()
+        {
+            hands.Add(new Hand());
+            Card moveCard = hands[currentHand].removeCard(1);//Remove second card from current hand and
+            int newHandIndex = hands.Count - 1;
+            hands[newHandIndex].addCard(moveCard); // add card to the new hand
+            if (moveCard.value == "Ace") //Split is Aces, draw 1 card for each hand and end turn
+            {
+                hands[currentHand].drawCard();
+                hands[currentHand].stand = true;
+                hands[newHandIndex].drawCard();
+                hands[newHandIndex].stand = true;
+            }
+            hands[currentHand].canSplit = false;
         }
 
     }
@@ -105,10 +159,5 @@ public class Dealer : Player
     public Card getRevealedCard()
     {
         return hands[currentHand].cards[0];
-    }
-
-    public void revealHand()
-    {
-        hands[currentHand].printHand();
     }
 }
