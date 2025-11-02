@@ -48,16 +48,6 @@ namespace BlackJack
             return hands[currentHand].bust;
         }
 
-        //public void dealCard()
-        //{
-        //    hands[currentHand].drawCard();
-        //    if(hands.Count == 1 && hands[currentHand].value == 21)
-        //    {
-        //        blackJack = true;
-        //    }
-
-        //}
-
         public int getCardCount()
         {
             return hands[currentHand].cards.Count;
@@ -91,7 +81,7 @@ namespace BlackJack
         {
             for (int i = 0; i < hands.Count; i++)
             {
-                Console.WriteLine($"{playerName} Hand #{i + 1} value: {hands[i].value}");
+                Console.WriteLine($"{playerName}'s Hand #{i + 1} value: {hands[i].value}");
                 hands[i].printHand();
                 Console.WriteLine();
             }
