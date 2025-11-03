@@ -12,7 +12,7 @@ namespace BlackJack
         private static Deck instance = null;
         private List<Card> cards;
         private Random random;
-        private IEnumerable<(string, string)> cardTouples;
+        private IEnumerable<(string, string)> cardToples;
         private int refillDeck;
         private int packsInDeck;
         public bool needToShuffle;
@@ -32,7 +32,7 @@ namespace BlackJack
         {
             get 
             { 
-                if(instance == null)
+                if (instance == null)
                 {
                     instance = new Deck();
                 }
@@ -45,17 +45,17 @@ namespace BlackJack
             string[] suits = { "Hearts", "Diamonds", "Clubs", "Spades" };
             string[] values = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
 
-            cardTouples = from suit in suits
+            cardToples = from suit in suits
                           from value in values
                           select (suit, value);
 
-            cards.AddRange(cardTouples.Select(card => new Card(card.Item1, card.Item2)));
+            cards.AddRange(cardToples.Select(card => new Card(card.Item1, card.Item2)));
         }
 
         public void resetDeck()
         {
             cards = new List<Card>();
-            cards.AddRange(Enumerable.Repeat(cardTouples.Select(card => new Card(card.Item1, card.Item2)), packsInDeck).SelectMany(n => n));
+            cards.AddRange(Enumerable.Repeat(cardToples.Select(card => new Card(card.Item1, card.Item2)), packsInDeck).SelectMany(n => n));
             shuffle();
             setRefillDeck();
             needToShuffle = false;
@@ -69,7 +69,7 @@ namespace BlackJack
             {
                 throw new ArgumentOutOfRangeException($"Number of decks must be at least 1 and no greater than 8: Value provided was {numOfDecks}.");
             }
-            cards.AddRange(Enumerable.Repeat(cardTouples.Select(card => new Card(card.Item1, card.Item2)), numOfDecks).SelectMany(n => n));
+            cards.AddRange(Enumerable.Repeat(cardToples.Select(card => new Card(card.Item1, card.Item2)), numOfDecks).SelectMany(n => n));
             shuffle();
             setRefillDeck();
         }

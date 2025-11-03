@@ -25,7 +25,7 @@ namespace BlackJack
         {
             while (true)
             {
-                Console.WriteLine($"{packsInDeck} decks are will be shuffled into deck, would you like to change the amount? Yes(y) No (n)");
+                Console.WriteLine($"{packsInDeck} decks will be shuffled into deck, would you like to change the amount? Yes(y) No (n)");
                 string playerIn = Console.ReadLine().ToLower();
                 if (playerIn == "y" || playerIn == "yes")
                 {
@@ -62,10 +62,10 @@ namespace BlackJack
 
         private void setupPlayers()
         {
-            while(true)
+            while (true)
             {
                 Console.WriteLine("How many players are there (1-9)?");
-                String playerIn = Console.ReadLine();
+                string playerIn = Console.ReadLine();
                 int numOfPlayers = -1;
                 if (int.TryParse(playerIn, out numOfPlayers) && numOfPlayers >= 1 && numOfPlayers <= 9)
                 {
@@ -100,7 +100,7 @@ namespace BlackJack
                         int betAmount = -1;
                         if (int.TryParse(playerIn, out betAmount) && betAmount > 0 && betAmount <= p.bankroll)
                         {
-                            p.bankroll -= betAmount; //Subtrack amount from players bankroll
+                            p.bankroll -= betAmount; //Subtract amount from players bankroll
                             p.setBet(betAmount); //Set bet for hand
                             break;
                         }
@@ -155,7 +155,7 @@ namespace BlackJack
             }
 
             Console.WriteLine($"\nDealers Revealed Card is: {dealer.getRevealedCard()}\n");
-            if (dealer.getRevealedCard().value == "Ace") //TODO: Add option for incusurance bet
+            if (dealer.getRevealedCard().value == "Ace") //TODO: Add option for insurance bet
             {
 
             }
@@ -249,10 +249,6 @@ namespace BlackJack
                         }
                     }
                 }
-                //Console.Clear();
-                //Console.WriteLine("Final Hand(s): \n");
-                //p.printAllHands();
-                //Program.waitToClear();
             }
             Console.Clear();
             dealer.playDealer();
@@ -279,7 +275,7 @@ namespace BlackJack
                             if (h.value > dealer.getValue())
                             {
                                 Console.WriteLine($"{p.playerName}'s Hand #{i + 1} (Value: {h.value}) Wins!");
-                                p.bankroll += (p.blackJack) ? (int)Math.Round((Double)h.bet * 2.5) : h.bet * 2; //If blackjack, player receives 1.5 times their bet back
+                                p.bankroll += (p.blackJack) ? (int)Math.Round((double)h.bet * 2.5) : h.bet * 2; //If blackjack, player receives 1.5 times their bet back
                             }
                             else if (h.value == dealer.getValue())
                             {
@@ -310,7 +306,7 @@ namespace BlackJack
                         if (!h.bust)
                         {
                             Console.WriteLine($"{p.playerName}'s Hand #{i + 1} (Value: {h.value}) Wins!");
-                            p.bankroll += (p.blackJack) ? (int)Math.Round((Double)h.bet * 2.5) : h.bet * 2; //If blackjack, player receives 1.5 times their bet back
+                            p.bankroll += (p.blackJack) ? (int)Math.Round((double)h.bet * 2.5) : h.bet * 2; //If blackjack, player receives 1.5 times their bet back
                         }
                         else
                         {
@@ -324,7 +320,7 @@ namespace BlackJack
 
         public void clearAllHands()
         {
-            foreach(Player p in players)
+            foreach (Player p in players)
             {
                 p.clearHands();
             }

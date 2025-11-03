@@ -80,7 +80,7 @@ namespace BlackJack
 
         public void addCard()
         {
-            if(hands.Count < 1)
+            if (hands.Count < 1)
             {
                 hands.Add(new Hand());
                 currentHand = 0;
@@ -121,12 +121,11 @@ namespace BlackJack
         {
             hands[currentHand].stand = true;
             hands[currentHand].canSplit = false;
-            //nextHand();
         }
 
         public void nextHand()
         {
-            if(currentHand == hands.Count - 1)
+            if (currentHand == hands.Count - 1)
             {
                 currentHand = 0;
             }
@@ -143,7 +142,7 @@ namespace BlackJack
             Card moveCard = hands[currentHand].removeCard(1);//Remove second card from current hand and
             int newHandIndex = hands.Count - 1;
             hands[newHandIndex].addCard(moveCard); // add card to the new hand
-            bankroll -= hands[currentHand].bet; //Remove split bet from bankrol
+            bankroll -= hands[currentHand].bet; //Remove split bet from bankroll
             hands[newHandIndex].bet = hands[currentHand].bet; //Set split hand bet
             hands[currentHand].drawCard();
             hands[newHandIndex].drawCard();
@@ -153,32 +152,33 @@ namespace BlackJack
                 hands[newHandIndex].stand = true;
             }
         }
-
     }
-}
 
-public class Dealer : Player
-{
-    public Dealer()
+    public class Dealer : Player
     {
-        hands = new List<Hand>();
-        hands.Add(new Hand());
-        currentHand = 0;
-        bankroll = 0;
-        playerName = "Dealer";
-        blackJack = false;
-    }
-    public void playDealer()
-    {
-        while (hands[currentHand].value <= 16)
+        public Dealer()
         {
-            hit();
+            hands = new List<Hand>();
+            hands.Add(new Hand());
+            currentHand = 0;
+            bankroll = 0;
+            playerName = "Dealer";
+            blackJack = false;
         }
-        stand();
+        public void playDealer()
+        {
+            while (hands[currentHand].value <= 16)
+            {
+                hit();
+            }
+            stand();
 
+        }
+        public Card getRevealedCard()
+        {
+            return hands[currentHand].cards[0];
+        }
     }
-    public Card getRevealedCard()
-    {
-        return hands[currentHand].cards[0];
-    }
+
 }
+

@@ -30,14 +30,14 @@ namespace BlackJack
         {
             cards.Add(Deck.Instance.dealCard());
             calculateValue();
-            if(cards.Count == 2)
+            if (cards.Count == 2)
             {
                 if (cards[0].value == cards[1].value)
                 {
                     canSplit = true;
                 }
             }
-            else if(cards.Count > 2)
+            else if (cards.Count > 2)
             {
                 canSplit = false;
             }
@@ -84,7 +84,7 @@ namespace BlackJack
                 checkVal += checkVal + 11 <= 21 ? 11 : 1;
             }
             value = checkVal;
-            if(value > 21)
+            if (value > 21)
             {
                 bust = true;
                 stand = true;
