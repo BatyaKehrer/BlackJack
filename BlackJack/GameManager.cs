@@ -240,6 +240,7 @@ namespace BlackJack
                         if (p.isStand() || p.isBust())
                         {
                             Console.WriteLine($"\nFinal Value for Hand #{p.getCurrentHand() + 1}: {p.getValue()}\n");
+                            p.printCurrentHand();
                             if (p.isBust())
                             {
                                 Console.WriteLine($"\n{p.playerName} busted");
