@@ -11,7 +11,7 @@ namespace BlackJack
     {
         public List<Hand> hands;
         public int currentHand;
-        public int bankrol;
+        public int bankroll;
         public string playerName;
         public bool blackJack;
 
@@ -19,7 +19,7 @@ namespace BlackJack
         {
             hands = new List<Hand>();
             currentHand = -1;
-            bankrol = 1000;
+            bankroll = 1000;
             playerName = "Player";
             blackJack = false;
         }
@@ -27,8 +27,9 @@ namespace BlackJack
         public Player(string name)
         {
             hands = new List<Hand>();
-            currentHand = -1;
-            bankrol = 1000;
+            hands.Add(new Hand());
+            currentHand = 0;
+            bankroll = 1000;
             playerName = name;
             blackJack = false;
         }
@@ -53,10 +54,29 @@ namespace BlackJack
             return hands[currentHand].cards.Count;
         }
 
+        public void setBet(int bet)
+        {
+            hands[currentHand].bet = bet;
+        }
+
+        public int getBet()
+        {
+            return hands[currentHand].bet;
+        }
+
+        public int getCurrentHand()
+        {
+            return currentHand;
+        }
+
         public void clearHands()
         {
             hands.Clear();
+            hands.Add(new Hand());
+            currentHand = 0;
+            blackJack = false;
         }
+
 
         public void addCard()
         {
@@ -66,7 +86,7 @@ namespace BlackJack
                 currentHand = 0;
             }
             hands[currentHand].drawCard();
-            if (hands.Count == 1 && hands[currentHand].value == 21)
+            if (hands.Count == 1 && getCardCount() == 2 && hands[currentHand].value == 21)
             {
                 blackJack = true;
             }
@@ -101,7 +121,7 @@ namespace BlackJack
         {
             hands[currentHand].stand = true;
             hands[currentHand].canSplit = false;
-            nextHand();
+            //nextHand();
         }
 
         public void nextHand()
@@ -118,18 +138,20 @@ namespace BlackJack
 
         public void splitHand()
         {
+            hands[currentHand].canSplit = false;
             hands.Add(new Hand());
             Card moveCard = hands[currentHand].removeCard(1);//Remove second card from current hand and
             int newHandIndex = hands.Count - 1;
             hands[newHandIndex].addCard(moveCard); // add card to the new hand
+            bankroll -= hands[currentHand].bet; //Remove split bet from bankrol
+            hands[newHandIndex].bet = hands[currentHand].bet; //Set split hand bet
+            hands[currentHand].drawCard();
+            hands[newHandIndex].drawCard();
             if (moveCard.value == "Ace") //Split is Aces, draw 1 card for each hand and end turn
             {
-                hands[currentHand].drawCard();
                 hands[currentHand].stand = true;
-                hands[newHandIndex].drawCard();
                 hands[newHandIndex].stand = true;
             }
-            hands[currentHand].canSplit = false;
         }
 
     }
@@ -137,6 +159,15 @@ namespace BlackJack
 
 public class Dealer : Player
 {
+    public Dealer()
+    {
+        hands = new List<Hand>();
+        hands.Add(new Hand());
+        currentHand = 0;
+        bankroll = 0;
+        playerName = "Dealer";
+        blackJack = false;
+    }
     public void playDealer()
     {
         while (hands[currentHand].value <= 16)

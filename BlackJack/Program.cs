@@ -8,14 +8,21 @@ public class Program
         Console.ReadLine();
         Console.Clear();
     }
+
     public static void Main(string[] args)
     {
         GameManager manager = new GameManager();
-        while (true)
+        while (manager.players.Count > 0)
         {
-            manager.dealCards();
+            while (manager.dealer.getValue() < 1)
+            {
+                manager.playerBet();
+                manager.dealCards();
+            }
             manager.playOutHands();
+            manager.levelBankrolls();
             manager.clearAllHands();
         }
+        Console.WriteLine("All players are done. Thanks for playing!");
     }
 }

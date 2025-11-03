@@ -13,6 +13,8 @@ namespace BlackJack
         private List<Card> cards;
         private Random random;
         private IEnumerable<(string, string)> cardTouples;
+        private int refillDeck;
+        private int packsInDeck;
 
         private Deck()
         {
@@ -20,6 +22,8 @@ namespace BlackJack
             random = new Random();
             InitializeDeck();
             Shuffle();
+            packsInDeck = 1;
+            setRefillDeck(); 
         }
 
         public static Deck Instance
@@ -48,12 +52,19 @@ namespace BlackJack
 
         public void AddDecks(int numOfDecks)
         {
-            if (numOfDecks < 1 || numOfDecks > 8)
+            packsInDeck = numOfDecks;
+            if (numOfDecks < 0 || numOfDecks > 8)
             {
                 throw new ArgumentOutOfRangeException($"Number of decks must be at least 1 and no greater than 8: Value provided was {numOfDecks}.");
             }
             cards.AddRange(Enumerable.Repeat(cardTouples.Select(card => new Card(card.Item1, card.Item2)), numOfDecks).SelectMany(n => n));
             Shuffle();
+            setRefillDeck();
+        }
+
+        private void setRefillDeck() 
+        {
+            refillDeck = cards.Count / 5;
         }
 
         private void Shuffle()
@@ -79,6 +90,11 @@ namespace BlackJack
 
             Card dealtCard = cards[0];
             cards.RemoveAt(0);
+            if(cards.Count < refillDeck) //When there less than 20% of the deck left add more decks
+            {
+                Console.WriteLine($"Deck is Running Low on cards. Adding {packsInDeck} packs to the Deck");
+                AddDecks(packsInDeck);
+            }
             return dealtCard;
         }
 

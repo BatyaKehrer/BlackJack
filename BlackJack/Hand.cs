@@ -25,18 +25,6 @@ namespace BlackJack
             stand = false;
             canSplit = false;
         }
-
-        public Hand(Card card)
-        {
-            cards = new List<Card>();
-            cards.Add(card);
-            value = -1;
-            bet = -1;
-            bust = false;
-            stand = false;
-            canSplit = false;
-        }
-
         
         public void drawCard()
         {
@@ -49,7 +37,7 @@ namespace BlackJack
                     canSplit = true;
                 }
             }
-            else if(cards.Count > 2 && canSplit)
+            else if(cards.Count > 2)
             {
                 canSplit = false;
             }
