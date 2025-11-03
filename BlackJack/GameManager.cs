@@ -55,7 +55,7 @@ namespace BlackJack
                     Console.WriteLine("Please provide a yes or no.");
                 }
             }
-            Deck.Instance.AddDecks(packsInDeck - 1);
+            Deck.Instance.addDecks(packsInDeck - 1);
             Console.WriteLine($"Continuing with {packsInDeck} decks");
             Program.waitToClear();
         }
@@ -116,6 +116,10 @@ namespace BlackJack
                     Console.WriteLine($"{p.playerName} has drained their bankroll, and must leave the table."); //Player is out of money and can't play
                     Program.waitToClear();
                     players.Remove(p);
+                    if (players.Count < 1)
+                    {
+                        return;
+                    }
                 }
                 Console.Clear();
             }
@@ -123,6 +127,10 @@ namespace BlackJack
         
         public void dealCards()
         {
+            if (Deck.Instance.needToShuffle) //When the deck gets below 20% reshuffle all cards back into the deck
+            {
+                Deck.Instance.resetDeck();
+            }
             Console.WriteLine("\nDealing Cards...\n");
             foreach (Player p in players) 
             {

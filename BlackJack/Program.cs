@@ -17,6 +17,11 @@ public class Program
             while (manager.dealer.getValue() < 1)
             {
                 manager.playerBet();
+                if (manager.players.Count < 1)
+                {
+                    Console.WriteLine("All players are done. Thanks for playing!");
+                    return;
+                }
                 manager.dealCards();
             }
             manager.playOutHands();

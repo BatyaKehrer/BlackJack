@@ -28,7 +28,7 @@ namespace BlackJack
         
         public void drawCard()
         {
-            cards.Add(Deck.Instance.DealCard());
+            cards.Add(Deck.Instance.dealCard());
             calculateValue();
             if(cards.Count == 2)
             {
